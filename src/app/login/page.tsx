@@ -20,6 +20,8 @@ export default function CreateFormPage() {
       
             const data = await response.json();
             localStorage.setItem("risk_bucket", data.risk_bucket);
+            localStorage.setItem("cash_balance", data.cash_balance);
+            localStorage.setItem("invested_balance", data.invested_balance);
             login(data.username); // ← 在這裡用 context 更新狀態
             router.push('/dashboard');
           } catch (error) {

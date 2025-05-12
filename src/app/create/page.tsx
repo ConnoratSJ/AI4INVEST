@@ -7,8 +7,9 @@ export default function CreateFormPage() {
       
         try {
           
-      
+
           // 送出表單到 Flask 的 /api/predict 做風險預測
+           
           const predictResponse = await fetch("http://localhost:5050/api/predict", {
             method: "POST",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -34,7 +35,7 @@ export default function CreateFormPage() {
               "Self-rated overall financial knowledge": formData["Self-rated overall financial knowledge"],
             }),
           });
-      
+          
           if (!predictResponse.ok) throw new Error("Prediction failed");
       
           const predictData = await predictResponse.json();
@@ -44,7 +45,9 @@ export default function CreateFormPage() {
             email: formData.email,
             username: formData.username,
             password: formData.password,
-            risk_bucket: predictData.risk_bucket
+            risk_bucket: predictData.risk_bucket,
+            cash_balance:"0",
+            invested_balance:"0"
           };
 
           // 送出表單到你自己的註冊 API（可留著）
@@ -56,7 +59,8 @@ export default function CreateFormPage() {
       
           if (!response.ok) throw new Error("User creation failed");
           localStorage.setItem("username", formData.username);
-          
+          localStorage.setItem("cash_balance", '0');
+          localStorage.setItem("invested_balance", '0');
           window.location.href = "/dashboard";
       
         } catch (error) {

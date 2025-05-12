@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, send_file
 import pandas as pd
 import joblib
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000"}})
@@ -54,10 +55,14 @@ def dashboard():
     bucket_str = request.form["risk_bucket"]
     bucket_code = risk_le.transform([bucket_str])[0]
     user_picks = picks_df[picks_df["bucket"] == bucket_code]
-
+    pickarray = user_picks.reset_index().to_dict(orient="records")
+    #for pick in pickarray:
+    #    tick = pick['ticker']
+    #    pick['price'] = requests.get(f'http://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={tick}&apikey=29RWAF1HUP16RXWG').json()['Global Quote']['05. price']
+    #print(pickarray)
     return jsonify({
         "bucket": bucket_str,
-        "picks": user_picks.reset_index().to_dict(orient="records")
+        "picks": pickarray
     })
 
 @app.route("/api/download/<bucket>")

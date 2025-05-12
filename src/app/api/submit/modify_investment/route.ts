@@ -41,16 +41,16 @@ export async function POST(req: Request) {
 
     const cash_balance_net_change = parseFloat(deposited)-parseFloat(withdrawn)+parseFloat(sold)-parseFloat(bought);
     const invested_balance_net_change = parseFloat(bought)-parseFloat(sold);
-    console.log('cash_balance_net_change' + cash_balance_net_change.toString())
-    console.log('invested_balance_net_change' + invested_balance_net_change.toString())
+    console.log('cash_balance_net_change ' + cash_balance_net_change.toString())
+    console.log('invested_balance_net_change ' + invested_balance_net_change.toString())
 
     foundUser.cash_balance = (parseFloat(foundUser.cash_balance)+cash_balance_net_change).toString();
     foundUser.invested_balance = (parseFloat(foundUser.invested_balance)+invested_balance_net_change).toString();
 
     users[foundUserIndex] = foundUser;
 
-    console.log('new cash balance' + foundUser.cash_balance);
-    console.log('new investment balance' + foundUser.invested_balance);
+    console.log('new cash balance ' + foundUser.cash_balance);
+    console.log('new investment balance ' + foundUser.invested_balance);
 
     await writeFile(usersFile, JSON.stringify(users, null, 2), 'utf-8');
     
